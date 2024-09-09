@@ -80,17 +80,11 @@ jobs:
           mkdir -p release
           zip -r release/app.zip *
 
-      - name: Upload Release Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-release
-          path: release/app.zip
-
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Correct usage of GITHUB_TOKEN
         with:
           tag_name: "release-${{ github.run_id }}"
           release_name: "Release ${{ github.run_id }}"
@@ -99,6 +93,8 @@ jobs:
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Add this to ensure proper credentials
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: release/app.zip
