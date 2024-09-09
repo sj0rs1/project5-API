@@ -1,34 +1,15 @@
-# Use PHP image as a base
-FROM php:8.1-fpm
+FROM php:8.1
 
-# Set working directory
-WORKDIR /var/www
-
-# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    zip \
-    unzip \
-    git \
-    curl \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libzip-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd zip
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+WORKDIR /var/www/html
 
-# Copy application files
 COPY . .
 
-# Install PHP dependencies using Composer
-RUN composer install --no-dev --no-interaction --optimize-autoloader
+RUN chown -R www-data:www-data \
+    /var/www/html/storage \
+    /var/www/html/bootstrap/cache
 
-# Expose port (if needed)
-EXPOSE 8080
-
-# Start the PHP service (if required)
-CMD ["php-fpm"]
+CMD php artisan serve --host=0.0.0.0 --port=8080
