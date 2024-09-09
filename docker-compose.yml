@@ -3,7 +3,7 @@ version: '3'
 services:
   laravelapp:
     container_name: laravelapp
-    image: francescoxx/laravelapp:1.0.0
+    image: sj0rs1/groenevingers_api:latest
     build: . 
     ports:
       - "8080:8080"
