@@ -28,7 +28,7 @@ COPY . .
 RUN composer install --no-dev --no-interaction --optimize-autoloader
 
 # Expose port (if needed)
-EXPOSE 80
+EXPOSE 8080
 
 # Start the PHP service (if required)
 CMD ["php-fpm"]
