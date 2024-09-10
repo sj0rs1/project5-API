@@ -2,6 +2,7 @@ version: '3'
 
 services:
   laravelapp:
+    network_mode: "host"
     container_name: laravelapp
     image: sj0rs1/groenevingers_api:latest
     build: . 
