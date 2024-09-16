@@ -31,6 +31,8 @@ RUN composer install --no-dev --no-interaction --optimize-autoloader
 # Expose port
 EXPOSE 8080
 
+#CMD ["php", "artisan", "migrate:fresh", "--seed"]
+
 # Run the application
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
 
