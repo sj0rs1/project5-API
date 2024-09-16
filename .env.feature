@@ -1,15 +1,15 @@
 APP_NAME=Laravel
 APP_ENV=local
-APP_KEY=
+APP_KEY=base64:CC/mvbAFEq1R4MQ4RbKO1Ci7hID+t0zEYWuqvfoXHKs=
 APP_DEBUG=true
-APP_URL=http://localhost
+APP_URL=http://localhost:8080
 
 LOG_CHANNEL=stack
 LOG_DEPRECATIONS_CHANNEL=null
 LOG_LEVEL=debug
 
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
+DB_HOST=db
 DB_PORT=3306
 DB_DATABASE=groenevingers_db
 DB_USERNAME=root
