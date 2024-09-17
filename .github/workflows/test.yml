@@ -40,7 +40,6 @@ jobs:
 
       - name: Copy .env file for the environment
         run: |
-          echo "${{ github.ref }}"
           if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
             cp .env.development .env
           elif [ "${{ github.ref }}" == "refs/heads/test" ]; then
@@ -50,13 +49,12 @@ jobs:
           elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
             cp .env.production .env
           fi
-        env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: groenevingers_db
-          DB_USERNAME: root
-          DB_PASSWORD:
+
+      - name: Check if .env file exists
+        run: ls -la
+
+      - name: Output .env file contents
+        run: cat .env
 
       - name: Run Composer
         run: |
