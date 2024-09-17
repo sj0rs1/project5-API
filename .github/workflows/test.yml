@@ -21,16 +21,9 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
-    
+
     steps:
       - uses: actions/checkout@v2
-      
-      - name: Wait for MySQL to be ready
-        run: |
-          echo "Waiting for MySQL to be ready..."
-          until mysqladmin ping -h"127.0.0.1" --silent; do
-            sleep 5
-          done
 
       - name: Cache composer dependencies
         uses: actions/cache@v2
@@ -45,9 +38,19 @@ jobs:
         with:
           php-version: 8.1
 
-      - name: Copy .env file
+      - name: Copy .env file for the environment
         run: |
-          cp .env.ci .env
+          echo(${{ github.ref }});
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
+            cp .env.development .env
+          elif [ "${{ github.ref }}" == "refs/heads/test" ]; then
+            cp .env.testing .env
+          elif [ "${{ github.ref }}" == "refs/heads/acceptance" ]; then
+            cp .env.acceptance .env
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            cp .env.production .env
+          fi
         env:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
@@ -59,7 +62,7 @@ jobs:
       - name: Run Composer
         run: |
           composer install --no-interaction
-      
+
       - name: Run PHP_CodeSniffer
         run: |
           vendor/bin/phpcs --exclude=Generic.Files.LineLength --standard=PSR12 app/
@@ -75,7 +78,6 @@ jobs:
       - name: Run tests
         run: |
           php artisan test
-
 
   release:
     name: Create Release
