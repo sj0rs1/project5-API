@@ -40,13 +40,13 @@ jobs:
 
       - name: Copy .env file for the environment
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/develop" ]]; then
+          if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
             cp .env.development .env
-          elif [[ "${{ github.ref }}" == "refs/heads/test" ]]; then
+          elif [ "${{ github.ref }}" == "refs/heads/test" ]; then
             cp .env.testing .env
-          elif [[ "${{ github.ref }}" == "refs/heads/acceptance" ]]; then
+          elif [ "${{ github.ref }}" == "refs/heads/acceptance" ]; then
             cp .env.acceptance .env
-          elif [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
             cp .env.production .env
           fi
         env:
