@@ -33,6 +33,9 @@ jobs:
           restore-keys: |
             composer-
 
+      - name: Print DB_HOST
+        run: echo $DB_HOST
+
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
