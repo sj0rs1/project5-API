@@ -25,6 +25,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+
       - name: Cache composer dependencies
         uses: actions/cache@v2
         with:
@@ -35,11 +40,6 @@ jobs:
 
       - name: Print DB_HOST
         run: echo $DB_HOST
-
-      - name: Install PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.1
 
       - name: Copy .env file for the environment
         run: |
@@ -58,6 +58,14 @@ jobs:
 
       - name: Output .env file contents
         run: cat .env
+
+      - name: Wait for MySQL to be ready
+        run: |
+          echo "Waiting for MySQL to be ready..."
+          until mysqladmin ping -h db --silent; do
+            echo "Waiting for database connection..."
+            sleep 5
+          done
 
       - name: Run Composer
         run: |
