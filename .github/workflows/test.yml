@@ -17,7 +17,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-          MYSQL_DATABASE: db
+          MYSQL_DATABASE: groenevingers_db
         ports:
           - 3306:3306
         options: >-
@@ -53,6 +53,7 @@ jobs:
           elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
             cp .env.production .env
           fi
+      
 
       - name: Check if .env file exists
         run: ls -la
@@ -75,6 +76,11 @@ jobs:
           vendor/bin/phpcs --exclude=Generic.Files.LineLength --standard=PSR12 app/
 
       - name: Migrate database
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: groenevingers_db
+          DB_PORT: 3306
+          DB_USER: root
         run: |
           php artisan migrate:fresh
 
