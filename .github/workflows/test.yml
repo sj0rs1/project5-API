@@ -169,8 +169,7 @@ jobs:
             TAG=latest
           fi
           docker build . -t ${{ secrets.DOCKER_USERNAME }}/groenevingers_api:${TAG}
-          
-      if: github.ref == 'refs/heads/main'
       - name: Push Docker Image
-        run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/groenevingers_api:${TAG}
+        if: github.ref == 'refs/heads/main'
+          run: |
+            docker push ${{ secrets.DOCKER_USERNAME }}/groenevingers_api:${TAG}
