@@ -81,11 +81,18 @@ jobs:
           DB_CONNECTION: sqlite
           DB_DATABASE: ":memory:"
         run: |
-          php artisan migrate:fresh
+          php artisan migrate:fresh --verbose
+
+      - name: List database tables after migration
+        run: |
+          sqlite3 :memory: ".tables"
 
       - name: Seed database
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
         run: |
-          php artisan db:seed
+          php artisan db:seed --verbose
 
       - name: Run tests
         run: |
