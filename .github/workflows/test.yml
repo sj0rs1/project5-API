@@ -17,7 +17,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-          MYSQL_DATABASE: groenevingers_db
+          MYSQL_DATABASE: db
         ports:
           - 3306:3306
         options: >-
@@ -44,7 +44,15 @@ jobs:
 
       - name: Copy .env file for the environment
         run: |
-          cp .env.development .env
+          if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
+            cp .env.development .env
+          elif [ "${{ github.ref }}" == "refs/heads/test" ]; then
+            cp .env.testing .env
+          elif [ "${{ github.ref }}" == "refs/heads/acceptance" ]; then
+            cp .env.acceptance .env
+          elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            cp .env.production .env
+          fi
 
       - name: Check if .env file exists
         run: ls -la
@@ -57,14 +65,6 @@ jobs:
 
       - name: Set Directory Permissions
         run: sudo chmod -R 777 storage bootstrap/cache
-
-      - name: Wait for MySQL to be ready
-        run: |
-          echo "Waiting for MySQL to be ready..."
-          until mysqladmin ping -h db --silent; do
-            echo "Waiting for database connection..."
-            sleep 5
-          done
 
       - name: Run Composer
         run: |
