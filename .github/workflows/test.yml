@@ -55,6 +55,19 @@ jobs:
             cp .env.production .env
           fi
       
+        - name: Set DB_CONNECTION environment
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            echo "Using MySQL for main branch"
+            echo "DB_CONNECTION=mysql" >> .env
+            echo "DB_HOST=127.0.0.1" >> .env
+            echo "DB_PORT=3306" >> .env
+            echo "DB_DATABASE=groenevingers_db" >> .env
+          else
+            echo "Using SQLite for non-main branches"
+            echo "DB_CONNECTION=sqlite" >> .env
+            echo "DB_DATABASE=/tmp/test_database.sqlite" >> .env
+          fi
 
       - name: Check if .env file exists
         run: ls -la
