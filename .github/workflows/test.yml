@@ -23,7 +23,8 @@ jobs:
       - uses: mirromutth/mysql-action@v1.1
         with:
           mysql database: groenevingers_db
-          mysql root password: 
+          mysql user: test-user
+          mysql password: example
       - name: Cache composer dependencies
         uses: actions/cache@v2
         with:
@@ -69,7 +70,8 @@ jobs:
         env:
           DB_CONNECTION: mysql
           DB_DATABASE: groenevingers_db
-          DB_USER: root
+          DB_USER: test-user
+          DB_PASSWORD: example
         run: |
           php artisan migrate:fresh
 
