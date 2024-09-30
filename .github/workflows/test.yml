@@ -77,9 +77,9 @@ jobs:
 
       - name: Migrate database
         env:
+          DB_HOST: mysql
           DB_CONNECTION: mysql
           DB_DATABASE: groenevingers_db
-          DB_PORT: 3306
           DB_USER: root
         run: |
           php artisan migrate:fresh
