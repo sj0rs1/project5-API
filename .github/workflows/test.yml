@@ -171,5 +171,5 @@ jobs:
           docker build . -t ${{ secrets.DOCKER_USERNAME }}/groenevingers_api:${TAG}
       - name: Push Docker Image
         if: github.ref == 'refs/heads/main'
-          run: |
-            docker push ${{ secrets.DOCKER_USERNAME }}/groenevingers_api:${TAG}
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/groenevingers_api:${TAG}
