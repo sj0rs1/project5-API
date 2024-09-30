@@ -54,8 +54,8 @@ jobs:
           elif [ "${{ github.ref }}" == "refs/heads/main" ]; then
             cp .env.production .env
           fi
-      
-        - name: Set DB_CONNECTION environment
+
+      - name: Set DB_CONNECTION environment  # Corrected indentation
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             echo "Using MySQL for main branch"
@@ -68,6 +68,7 @@ jobs:
             echo "DB_CONNECTION=sqlite" >> .env
             echo "DB_DATABASE=/tmp/test_database.sqlite" >> .env
           fi
+
 
       - name: Check if .env file exists
         run: ls -la
