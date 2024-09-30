@@ -23,7 +23,6 @@ jobs:
       - uses: mirromutth/mysql-action@v1.1
         with:
           mysql database: groenevingers_db
-          mysql user: root
       - name: Cache composer dependencies
         uses: actions/cache@v2
         with:
