@@ -55,7 +55,7 @@ jobs:
             cp .env.production .env
           fi
 
-      - name: Set DB_CONNECTION environment  # Corrected indentation
+      - name: Set DB_CONNECTION environment
         run: |
           if [ "${{ github.ref }}" == "refs/heads/main" ]; then
             echo "Using MySQL for main branch"
@@ -69,13 +69,6 @@ jobs:
             echo "DB_DATABASE=/tmp/test_database.sqlite" >> .env
           fi
 
-
-      - name: Check if .env file exists
-        run: ls -la
-
-      - name: Output .env file contents
-        run: cat .env
-
       - name: Generate Application Key
         run: php artisan key:generate --verbose
 
@@ -84,9 +77,14 @@ jobs:
 
       - name: Run Composer
         run: |
-          composer install --no-interaction
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            composer install --no-interaction --no-dev
+          else
+            composer install --no-interaction
+          fi
 
       - name: Run PHP_CodeSniffer
+        if: github.ref != 'refs/heads/main'
         run: |
           vendor/bin/phpcs --exclude=Generic.Files.LineLength --standard=PSR12 app/
 
